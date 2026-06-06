@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>Grill Web</title>
+		<link rel="icon" type="image/png" sizes="64x64" href="/favicon.png" />
+		<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+		<link rel="stylesheet" href="/styles.css" />
+	</head>
+	<body>
+		<div id="app" class="app-shell">
+			<header class="topbar">
+				<div class="project-mark logo-frame" aria-hidden="true">
+					<img src="/bee-logo.png" alt="" />
+				</div>
+				<div class="project-title-wrap">
+					<h1>Refinement Board</h1>
+					<p id="syncStatus">Manual refresh · refinement stages</p>
+				</div>
+				<button id="themeToggle" class="icon-button" type="button" aria-label="Toggle theme">◐</button>
+			</header>
+
+			<section id="healthBanner" class="health-banner" hidden aria-live="polite">
+				<div>
+					<p class="health-banner-kicker">Setup warning</p>
+					<div id="healthBannerSummary" class="health-banner-summary"></div>
+				</div>
+				<div id="healthBannerIssues" class="health-banner-issues"></div>
+			</section>
+
+			<section id="boardToolbar" class="toolbar" aria-label="Board filters">
+				<div class="search-wrap">
+					<span aria-hidden="true">⌕</span>
+					<input id="searchInput" type="search" placeholder="Search title or tags" autocomplete="off" />
+				</div>
+				<div id="epicFilters" class="epic-filters" role="list" aria-label="Epic filters"></div>
+				<button id="refreshButton" class="filter-pill" type="button">Refresh now</button>
+			</section>
+
+			<main id="boardView" class="board-viewport">
+				<section id="board" class="board" aria-label="Todo refinement board"></section>
+			</main>
+
+			<main id="grillView" class="grill-view" hidden>
+				<section class="grill-layout" aria-label="Guided Grill-Me todo refinement">
+					<aside class="grill-context-pane" aria-label="Todo context">
+						<p id="grillTodoMeta" class="modal-meta"></p>
+						<h2 id="grillTodoTitle">Todo</h2>
+						<div id="grillTodoBadges" class="modal-badges"></div>
+						<section id="grillTodoPreview" class="markdown-preview grill-todo-preview"></section>
+					</aside>
+					<section class="grill-interview-pane" aria-label="Grill-Me interview">
+						<header class="grill-interview-header">
+							<div class="grill-title-row">
+								<button id="grillBackButton" class="icon-button grill-back-button" type="button" aria-label="Zur Übersicht">←</button>
+								<div>
+									<p class="modal-meta">Grill-Me</p>
+									<h2 id="grillViewTitle">Todo</h2>
+									<p id="grillSessionLine" class="grill-session-line">No session yet</p>
+								</div>
+							</div>
+							<div class="grill-header-actions">
+								<button id="grillFinalizeButton" class="primary-button confirm-icon-button" type="button" aria-label="Plan übernehmen">✓</button>
+								<button id="grillPauseButton" class="secondary-button" type="button">Pause</button>
+							</div>
+						</header>
+						<section class="current-question-card" aria-label="Current question">
+							<div class="question-nav" aria-label="Question navigation">
+								<button id="grillPrevQuestionButton" type="button" aria-label="Vorherige Frage">←</button>
+								<span id="grillQuestionPosition">Frage 1 / 1</span>
+								<button id="grillNextQuestionButton" type="button" aria-label="Nächste Frage">→</button>
+							</div>
+							<p class="question-kicker">Current question</p>
+							<div id="grillCurrentQuestion" class="markdown-preview current-question-body"></div>
+						</section>
+						<section class="history-panel" aria-label="Previous Q and A history">
+							<div class="history-panel-header">
+								<span>Previous Q/A</span>
+								<span id="grillRunStatus">Idle</span>
+							</div>
+							<div id="grillHistory" class="history-list"></div>
+							<div id="grillDiagnostics" class="diagnostics-log" aria-live="polite"></div>
+						</section>
+						<form id="grillForm" class="grill-answer-form">
+							<label for="grillAnswer">Answer latest question</label>
+							<div class="answer-row">
+								<textarea id="grillAnswer" rows="3" placeholder="Waiting for the latest Grill-Me question…"></textarea>
+								<button id="grillSendButton" class="primary-button send-button" type="submit" disabled aria-label="Send answer">
+									<span class="send-label">↗</span>
+									<span class="spinner" aria-hidden="true"></span>
+								</button>
+							</div>
+							<div id="grillContextMeter" class="context-meter" aria-live="polite"></div>
+						</form>
+					</section>
+				</section>
+			</main>
+		</div>
+
+		<div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+		<div id="modalBackdrop" class="modal-backdrop" hidden>
+			<aside class="todo-modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+				<header class="modal-header">
+					<div>
+						<p id="modalMeta" class="modal-meta"></p>
+						<h2 id="modalTitle">Todo</h2>
+					</div>
+					<button id="closeModalButton" class="icon-button" type="button" aria-label="Close">×</button>
+				</header>
+				<div id="modalBadges" class="modal-badges"></div>
+				<div id="sessionPanel" class="session-panel" hidden></div>
+				<div class="modal-actions-inline">
+					<button id="openGrillButton" class="primary-button" type="button">Start Grill-Me</button>
+				</div>
+				<form id="statusForm" class="status-control">
+					<label for="statusField">Status</label>
+					<select id="statusField" name="status">
+						<option value="open">open</option>
+						<option value="blocked">blocked</option>
+						<option value="review">review</option>
+						<option value="waiting">waiting</option>
+						<option value="closed">closed</option>
+					</select>
+					<button id="saveStatusButton" class="primary-button" type="submit">Save status</button>
+				</form>
+				<section id="previewPane" class="markdown-preview detail-preview"></section>
+			</aside>
+		</div>
+
+		<div id="grillStartBackdrop" class="modal-backdrop" hidden>
+			<aside class="status-dialog grill-start-dialog" role="dialog" aria-modal="true" aria-labelledby="grillStartTitle">
+				<h2 id="grillStartTitle">Start Grill-Me</h2>
+				<p>Add initial plan/context before the agent asks its first question.</p>
+				<form id="grillStartForm" class="todo-form">
+					<label>
+						<span>Initial context</span>
+						<textarea id="grillContextField" rows="8" placeholder="What should Grill-Me know about your plan, constraints, and open questions?"></textarea>
+					</label>
+					<div class="modal-actions flat-actions">
+						<button id="cancelGrillStartButton" class="secondary-button" type="button">Cancel</button>
+						<button id="confirmGrillStartButton" class="primary-button" type="submit">Start</button>
+					</div>
+				</form>
+			</aside>
+		</div>
+
+		<div id="finalReviewBackdrop" class="modal-backdrop" hidden>
+			<aside class="todo-modal final-review-modal" role="dialog" aria-modal="true" aria-labelledby="finalReviewTitle">
+				<header class="modal-header">
+					<div>
+						<p class="modal-meta">Final review</p>
+						<h2 id="finalReviewTitle">Todo übernehmen</h2>
+					</div>
+					<button id="closeFinalReviewButton" class="icon-button" type="button" aria-label="Close">×</button>
+				</header>
+				<section id="finalParsePanel" class="final-parse-panel" hidden>
+					<p class="notice">Die Agent-Antwort konnte nicht als gültiges Todo-JSON gelesen werden. Korrigiere das JSON manuell oder starte den letzten Agent-Turn erneut.</p>
+					<textarea id="finalRawField" rows="12" spellcheck="false"></textarea>
+					<p id="finalParseError" class="parse-error"></p>
+					<div class="modal-actions flat-actions">
+						<button id="finalRetryButton" class="secondary-button" type="button">Agent erneut versuchen</button>
+						<button id="finalParseButton" class="primary-button" type="button">JSON prüfen</button>
+					</div>
+				</section>
+				<form id="finalReviewForm" class="todo-form final-review-form" hidden>
+					<label>
+						<span>Title</span>
+						<input id="finalTitleField" type="text" required />
+					</label>
+					<label>
+						<span>Tags (comma or newline separated)</span>
+						<textarea id="finalTagsField" rows="3"></textarea>
+					</label>
+					<label>
+						<span>Markdown body</span>
+						<textarea id="finalBodyField" rows="14" required></textarea>
+					</label>
+					<section id="finalPreviewPane" class="markdown-preview final-preview"></section>
+					<div class="modal-actions flat-actions">
+						<button id="cancelFinalReviewButton" class="secondary-button" type="button">Cancel</button>
+						<button id="confirmFinalReviewButton" class="primary-button" type="submit">Todo final speichern</button>
+					</div>
+				</form>
+			</aside>
+		</div>
+
+		<script type="module" src="/app.js"></script>
+	</body>
+</html>
