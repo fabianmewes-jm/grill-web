@@ -1,4 +1,7 @@
 /**
+ * Source: Fabian Mewes' local Pi Todo extension, bundled with grill-web as a
+ * package-local Pi resource under the MIT license.
+ *
  * This extension stores todo items as files under <todo-dir> (defaults to .pi/todos,
  * or the path in PI_TODO_PATH).  Each todo is a standalone markdown file named
  * <id>.md and an optional <id>.lock file is used while a session is editing it.

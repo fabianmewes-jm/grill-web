@@ -80,6 +80,10 @@ After `pi install -l .pi/grill-web`, Pi loads package resources directly from:
 
 These resources are **not** copied into `.pi/extensions` or `.pi/skills`. Keep the checkout in place so Pi can continue loading the package-local extension and skill files.
 
+## Credits for bundled Pi resources
+
+The bundled Todo extension (`extensions/todos.ts`) and `grill-me` skill (`skills/grill-me/SKILL.md`) come from Fabian Mewes' local Pi workflow and are included in `grill-web` as package-local Pi resources under the MIT license.
+
 ## Parent project gitignore
 
 `.pi/grill-web/` is a nested tool checkout inside the parent project. The parent project should ignore it, for example:
