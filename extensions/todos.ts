@@ -1,6 +1,7 @@
 /**
- * Source: Fabian Mewes' local Pi Todo extension, bundled with grill-web as a
- * package-local Pi resource under the MIT license.
+ * Source: adapted from Armin Ronacher's `agent-stuff` Todo extension:
+ * https://github.com/mitsuhiko/agent-stuff/blob/main/extensions/todos.ts
+ * Upstream license: Apache-2.0.
  *
  * This extension stores todo items as files under <todo-dir> (defaults to .pi/todos,
  * or the path in PI_TODO_PATH).  Each todo is a standalone markdown file named

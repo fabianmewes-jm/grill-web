@@ -82,7 +82,12 @@ These resources are **not** copied into `.pi/extensions` or `.pi/skills`. Keep t
 
 ## Credits for bundled Pi resources
 
-The bundled Todo extension (`extensions/todos.ts`) and `grill-me` skill (`skills/grill-me/SKILL.md`) come from Fabian Mewes' local Pi workflow and are included in `grill-web` as package-local Pi resources under the MIT license.
+`grill-web` bundles two package-local Pi resources from upstream projects:
+
+- Todo extension (`extensions/todos.ts`): adapted from Armin Ronacher's `agent-stuff` repository: <https://github.com/mitsuhiko/agent-stuff/blob/main/extensions/todos.ts>. The upstream repository is licensed under Apache-2.0.
+- `grill-me` skill (`skills/grill-me/SKILL.md`): adapted from Matt Pocock's `skills` repository: <https://github.com/mattpocock/skills/tree/main/skills/productivity/grill-me>. The upstream repository is licensed under MIT.
+
+The rest of `grill-web` is released under the MIT license in this repository. Bundled resources retain their upstream attribution and license terms.
 
 ## Parent project gitignore
 
