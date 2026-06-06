@@ -1,5 +1,5 @@
 /**
- * Source: adapted from Armin Ronacher's `agent-stuff` Todo extension:
+ * Source: copied from Armin Ronacher's `agent-stuff` Todo extension:
  * https://github.com/mitsuhiko/agent-stuff/blob/main/extensions/todos.ts
  * Upstream license: Apache-2.0.
  *
